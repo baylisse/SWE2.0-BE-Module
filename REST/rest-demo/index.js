@@ -9,9 +9,9 @@ app.use(express.urlencoded({extended:true}));
 
 app.get('/dogs', async (req, res, next) => {
   try {
-    const where = {};
-    
-    for(const key of [name, breed, color, description]) {
+    const where = {}; // we will pass this into the findAll query after adding key:value pairs from req.query
+
+    for(const key of [name, breed, color, description]) { // based on columns from model, loop through to build out the where obj
       if(req.query[key]) {
         where[key] = {
           [Op.like]: `%${req.query[key]}%` // searches within the string and finds similar matches
