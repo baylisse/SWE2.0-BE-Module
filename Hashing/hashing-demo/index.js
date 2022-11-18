@@ -17,20 +17,20 @@ const run = async () => {
     /* *************** START DEMO *************** */
     
     //hashing a password with bcrypt.hash
-
-    const hashedPassword = await bcrypt.hash(userJohn.password, SALT_COUNT);
-    const hashedPassword2 = await bcrypt.hash(userJohn2.password, SALT_COUNT);
-
-    console.log(hashedPassword);
-    console.log(hashedPassword2);
-
-    await User.create()
-
+    const hash1 = await bcrypt.hash(userJohn.password, SALT_COUNT);
+    console.log("hashed: ", hash1);
+    const hash2 = await bcrypt.hash(userJohn2.password, SALT_COUNT);
+    console.log("hashed 2: ", hash2);
 
 
     //comparing a password with bcrypt.compare
+    const match = await bcrypt.compare(userJohn.password, hash1);
+    console.log(match);
 
-    const isMatch  = await bcrypt.compare(userJohn.password, hashedPassword)
+
+    // create a user with a hashed password
+    const createdUser = await User.create({username: userJohn.username, password: hash1});
+  
 
 
     
