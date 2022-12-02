@@ -22,8 +22,6 @@ require('dotenv').config();
 // get JWT_SECRET from .env
 const { JWT_SECRET } = process.env;
 
-// middleware
-
 const setUser = async (req, res, next) => {
     try {
         const auth = req.header('Authorization');
@@ -42,14 +40,9 @@ const setUser = async (req, res, next) => {
     }
 }
 
-
-
-// routes, register && login
-
 app.get("/", async (req, res, next) => {
     res.send("Up and running");
 });
-
 
 app.post('/register', async (req, res, next) => {
     try {
@@ -66,7 +59,6 @@ app.post('/register', async (req, res, next) => {
         next(err);
     }
 });
-
 
 app.post('/login', async (req, res, next) => {
     try {
@@ -102,9 +94,6 @@ app.post('/subscribers', setUser, async (req, res, next) => {
         }});   
     }
 });
-
-
-
 
 
 app.listen(port, () => {
