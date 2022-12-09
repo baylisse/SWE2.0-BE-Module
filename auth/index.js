@@ -1,14 +1,13 @@
 require('dotenv').config('.env');
 const cors = require('cors');
 const express = require('express');
-const { auth } = require('express-openid-connect');
 const morgan = require('morgan');
+const { auth } = require('express-openid-connect');
 
 
 // create express app
 const app = express();
-// pull PORT from environment variables
-const { PORT = 3000 } = process.env;
+const PORT = 3000;
 
 // middleware
 // enable CORS
@@ -23,26 +22,24 @@ app.use(express.urlencoded({extended:true}));
 //get env variables
 const {
   AUTH0_SECRET,
-  AUTH0_AUDIENCE,
+  BASE_URL,
   AUTH0_CLIENT_ID,
-  AUTH0_BASE_URL
-} = process.env;
+  AUTH0_URL
+} = process.env
 
 // define the config object 
 
 const config = {
-  authRequired: true,
+  authRequired: false,
   auth0Logout: true,
   secret: AUTH0_SECRET,
+  baseURL: BASE_URL,
   clientID: AUTH0_CLIENT_ID,
-  baseURL: AUTH0_AUDIENCE,
-  issuerBaseURL: AUTH0_BASE_URL
+  issuerBaseURL: AUTH0_URL
 };
-
     
 // auth router attaches /login, /logout, and /callback routes to the baseURL
 app.use(auth(config));
-
 
 // create a GET / route handler that sends back Logged in or Logged out
 // req.isAuthenticated is provided from the auth router
@@ -52,8 +49,8 @@ app.get('/', (req, res) => {
     <h2>Welcome, ${req.oidc.user.name}</h2>
     <p><b>Username: ${req.oidc.user.email}</b></p>
     <p>${req.oidc.user.email}</p>
-    <img src="${req.oidc.user.picture}" alt="${req.oidc.user.name}">
-    ` : 'logged out')
+    <img src="${req.oidc.user.picture}" alt="A picture of a ${req.oidc.user.name}">
+    ` : 'Logged out')
 })
 
 
